@@ -2,8 +2,8 @@
  ******************************************************************************
  ** ファイル名 : app.cpp
  **
- ** 概要 : 
- **
+ ** 概要 : カラーセンサの値をbluetoothで拾ってくるもの作りたい
+ **2017/5/17ばば
  ** 注記 : 
  ******************************************************************************
  **/
@@ -65,6 +65,8 @@ Clock*          clock;
 int count;
 static char message[MESSAGE_LEN + 1] = {0};
 
+int colorSensor_data = 0;
+
 /* メインタスク */
 void main_task(intptr_t unused)
 {
@@ -103,7 +105,11 @@ void main_task(intptr_t unused)
     		Message("finished...");
     		break;
     	}
-        clock->sleep(4); /* 4msec周期起動 */
+    	
+    	/*カラーセンサから値をとってくる*/
+    	colorSensor_data = colorSensor->getBrightness();
+    	
+        clock->sleep(10); /* 10msec周期起動 */
     }
 	
 
@@ -122,14 +128,15 @@ void main_task(intptr_t unused)
 //*****************************************************************************
 void bt_task(intptr_t unused)
 {
-	
+	//colorSensor_dataを送信したい
 	/*通信処理*/
 	while(1){
-		int size = fread(message,1,MESSAGE_LEN,bt);
 		
-		if(size>0){
-			fwrite(message,1,size,bt);
-		}
+		char str[8];
+		sprintf(str, "%d", colorSensor_data);
+		
+		fwrite(str,1,8,bt);
+		
 		display();
 	}
 	
