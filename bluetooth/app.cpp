@@ -46,7 +46,7 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 //メッセージを書く関数
 static void Message(const char* str);
 //状態を表示する関数
-void display();
+//void display();
 //各センサの初期化をする関数
 static void Init();
 
@@ -130,7 +130,7 @@ void bt_task(intptr_t unused)
 		if(size>0){
 			fwrite(message,1,size,bt);
 		}
-		display();
+		Message(message);
 	}
 	
 }
@@ -141,13 +141,13 @@ void bt_task(intptr_t unused)
 // 返り値 : なし
 // 概要 : 状態を表示する
 //*******************************************************************
-void display()
+/*void display()
 {
   ev3_lcd_set_font(EV3_FONT_SMALL);
   ev3_lcd_draw_string("Program is running", 10, 30);
   ev3_lcd_set_font(EV3_FONT_MEDIUM);
   ev3_lcd_draw_string(message, 10, 40);
-}
+}*/
 
 //*******************************************************************
 // 関数名 : Message
